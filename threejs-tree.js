@@ -1,8 +1,8 @@
-// ===== REALISTIC DETAILED CHRISTMAS TREE =====
-// High-detailed realistic tree with proper materials and lighting
-console.log("🎄 Realistic Detailed Christmas Tree loading...");
+// ===== ELEGANT CHRISTMAS TREE =====
+// Beautiful tree with optimized performance
+console.log("🎄 Elegant Christmas Tree loading...");
 
-class RealisticChristmasTree {
+class ElegantChristmasTree {
     constructor() {
         this.scene = null;
         this.camera = null;
@@ -11,122 +11,116 @@ class RealisticChristmasTree {
         this.tree = null;
         this.gifts = [];
         this.decorations = [];
-        this.snowflakes = [];
         this.time = 0;
         this.isInitialized = false;
         
-        // Realistic settings
+        // Optimized settings
         this.settings = {
-            treeSegments: 24,           // High poly count
-            trunkSegments: 12,
             enableShadows: true,
-            enablePostProcessing: false,
             treeScale: 1.0,
             animationSpeed: 1.0,
-            snowEnabled: true,
-            windEnabled: true
+            snowEnabled: false,
+            windEnabled: true,
+            lightsEnabled: true
         };
         
-        // Colors and materials
-        this.materials = {
-            pineGreen: 0x1B5E20,       // Dark pine green
-            pineGreenLight: 0x388E3C,  // Light pine green
-            pineGreenTip: 0x4CAF50,    // Tip green
-            trunkBrown: 0x5D4037,      // Dark brown
-            trunkDark: 0x3E2723,       // Darker brown
-            starGold: 0xFFD700,        // Gold
-            starGlow: 0xFFAB00,        // Orange glow
-            ornamentRed: 0xF44336,     // Red
-            ornamentBlue: 0x2196F3,    // Blue
-            ornamentGold: 0xFFC107,    // Gold
-            ornamentSilver: 0xE0E0E0,  // Silver
-            ribbonRed: 0xD32F2F,       // Dark red
-            ribbonGold: 0xFF9800       // Gold ribbon
+        // Harmonious color palette
+        this.colors = {
+            treeDarkGreen: 0x1B5E20,
+            treeGreen: 0x2E7D32,
+            treeLightGreen: 0x4CAF50,
+            trunkBrown: 0x5D4037,
+            starGold: 0xFFD700,
+            starGlow: 0xFFAB00,
+            ornamentRed: 0xF44336,
+            ornamentBlue: 0x2196F3,
+            ornamentGold: 0xFFC107,
+            ornamentSilver: 0xE0E0E0,
+            ornamentGreen: 0x4CAF50,
+            ornamentPurple: 0x9C27B0,
+            ribbonGold: 0xFF9800,
+            ribbonSilver: 0xE0E0E0,
+            groundBlue: 0x1A237E,
+            groundSnow: 0xFFFFFF
         };
     }
 
     init(canvasId = 'tree-canvas') {
         return new Promise((resolve, reject) => {
             try {
-                console.log("🎄 Creating Realistic Christmas Tree...");
+                console.log("🎄 Creating Elegant Christmas Tree...");
                 
                 const canvas = document.getElementById(canvasId);
                 if (!canvas) throw new Error('Canvas not found');
 
-                // === 1. SCENE SETUP ===
+                // === SCENE SETUP ===
                 this.scene = new THREE.Scene();
                 this.scene.background = new THREE.Color(0x0F172A);
                 
-                // Add fog for depth
-                this.scene.fog = new THREE.FogExp2(0x0F172A, 0.02);
+                // Gentle fog for depth
+                this.scene.fog = new THREE.FogExp2(0x0F172A, 0.015);
 
-                // === 2. HIGH-QUALITY RENDERER ===
+                // === RENDERER ===
                 this.renderer = new THREE.WebGLRenderer({
                     canvas: canvas,
                     antialias: true,
-                    alpha: false,
-                    powerPreference: 'high-performance',
-                    precision: 'highp'
+                    alpha: true,
+                    powerPreference: 'high-performance'
                 });
                 
                 this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
                 this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 this.renderer.outputEncoding = THREE.sRGBEncoding;
                 this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-                this.renderer.toneMappingExposure = 1.2;
+                this.renderer.toneMappingExposure = 1.1;
                 
                 if (this.settings.enableShadows) {
                     this.renderer.shadowMap.enabled = true;
                     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                 }
 
-                // === 3. PERSPECTIVE CAMERA ===
+                // === CAMERA ===
                 const width = canvas.clientWidth;
                 const height = canvas.clientHeight;
-                this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-                this.camera.position.set(3, 4, 8);
+                this.camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+                this.camera.position.set(0, 3, 10);
                 this.camera.lookAt(0, 2, 0);
 
-                // === 4. PROFESSIONAL LIGHTING ===
-                this.setupProfessionalLighting();
+                // === LIGHTING ===
+                this.setupElegantLighting();
 
-                // === 5. CREATE REALISTIC TREE ===
-                this.createRealisticTree();
+                // === CREATE TREE ===
+                this.createElegantTree();
 
-                // === 6. CREATE REALISTIC DECORATIONS ===
-                this.createRealisticDecorations();
+                // === DECORATIONS ===
+                this.createElegantDecorations();
 
-                // === 7. CREATE REALISTIC GIFTS ===
-                this.createRealisticGifts();
+                // === GIFTS ===
+                this.createElegantGifts();
 
-                // === 8. CREATE SNOW ===
-                if (this.settings.snowEnabled) {
-                    this.createRealisticSnow();
-                }
+                // === GROUND ===
+                this.createElegantGround();
 
-                // === 9. CREATE GROUND ===
-                this.createGround();
-
-                // === 10. ORBIT CONTROLS ===
+                // === CONTROLS ===
                 if (typeof THREE.OrbitControls !== 'undefined') {
                     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
                     this.controls.enableDamping = true;
                     this.controls.dampingFactor = 0.05;
-                    this.controls.minDistance = 3;
-                    this.controls.maxDistance = 20;
+                    this.controls.minDistance = 5;
+                    this.controls.maxDistance = 15;
                     this.controls.maxPolarAngle = Math.PI / 2;
                     this.controls.autoRotate = true;
-                    this.controls.autoRotateSpeed = 0.5;
+                    this.controls.autoRotateSpeed = 0.3;
                 }
 
-                // === 11. START ANIMATION LOOP ===
+                // === ANIMATION ===
                 this.animate();
 
-                // === 12. HANDLE RESIZE ===
+                // === RESIZE HANDLER ===
                 this.setupResizeHandler();
 
                 this.isInitialized = true;
-                console.log("✅ Realistic Christmas Tree ready!");
+                console.log("✅ Elegant Christmas Tree ready!");
                 
                 resolve(this);
                 
@@ -137,326 +131,337 @@ class RealisticChristmasTree {
         });
     }
 
-    setupProfessionalLighting() {
-        // Ambient light for general illumination
+    setupElegantLighting() {
+        // Ambient light
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
         this.scene.add(ambientLight);
 
-        // Main directional light (sun)
-        const sunLight = new THREE.DirectionalLight(0xffffff, 1.0);
-        sunLight.position.set(10, 20, 10);
-        sunLight.castShadow = this.settings.enableShadows;
+        // Main light
+        const mainLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        mainLight.position.set(5, 10, 5);
+        mainLight.castShadow = this.settings.enableShadows;
         
         if (this.settings.enableShadows) {
-            sunLight.shadow.mapSize.width = 2048;
-            sunLight.shadow.mapSize.height = 2048;
-            sunLight.shadow.camera.near = 0.5;
-            sunLight.shadow.camera.far = 50;
-            sunLight.shadow.camera.left = -10;
-            sunLight.shadow.camera.right = 10;
-            sunLight.shadow.camera.top = 10;
-            sunLight.shadow.camera.bottom = -10;
-            sunLight.shadow.bias = -0.0001;
+            mainLight.shadow.mapSize.width = 1024;
+            mainLight.shadow.mapSize.height = 1024;
+            mainLight.shadow.camera.near = 0.5;
+            mainLight.shadow.camera.far = 50;
+            mainLight.shadow.bias = -0.001;
         }
         
-        this.scene.add(sunLight);
+        this.scene.add(mainLight);
 
-        // Fill light for soft shadows
-        const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
-        fillLight.position.set(-10, 10, -10);
+        // Fill light
+        const fillLight = new THREE.DirectionalLight(0xffffff, 0.2);
+        fillLight.position.set(-5, 5, -5);
         this.scene.add(fillLight);
 
-        // Christmas tree glow light
-        const treeLight = new THREE.PointLight(0x32CD32, 1.5, 20);
+        // Tree glow
+        const treeLight = new THREE.PointLight(0x4CAF50, 1.2, 15);
         treeLight.position.set(0, 3, 0);
-        treeLight.castShadow = this.settings.enableShadows;
         this.scene.add(treeLight);
         this.treeLight = treeLight;
 
-        // Rim light for edge definition
-        const rimLight = new THREE.DirectionalLight(0x88ccff, 0.2);
-        rimLight.position.set(-5, 5, 5);
-        this.scene.add(rimLight);
+        // Accent light for ornaments
+        const accentLight = new THREE.PointLight(0xFFD700, 0.5, 10);
+        accentLight.position.set(2, 4, 2);
+        this.scene.add(accentLight);
     }
 
-    createRealisticTree() {
+    createElegantTree() {
         const treeGroup = new THREE.Group();
-        treeGroup.name = 'RealisticChristmasTree';
+        treeGroup.name = 'ElegantChristmasTree';
 
-        // === REALISTIC TRUNK ===
-        const trunkHeight = 2.0;
-        const trunkGeometry = new THREE.CylinderGeometry(
-            0.3, 0.5, trunkHeight, this.settings.trunkSegments
-        );
-        
-        // Create bark texture effect programmatically
+        // === TRUNK ===
+        const trunkGeometry = new THREE.CylinderGeometry(0.2, 0.3, 2.0, 8);
         const trunkMaterial = new THREE.MeshPhongMaterial({
-            color: this.materials.trunkBrown,
-            shininess: 10,
-            specular: 0x222222,
-            bumpScale: 0.05
+            color: this.colors.trunkBrown,
+            shininess: 15,
+            specular: 0x111111
         });
         
         const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
-        trunk.position.y = trunkHeight / 2;
+        trunk.position.y = 1.0;
         trunk.castShadow = true;
         trunk.receiveShadow = true;
         treeGroup.add(trunk);
 
-        // === DETAILED TREE LEVELS ===
-        const levels = [
-            { radius: 2.5, height: 2.0, y: 2.5, segments: this.settings.treeSegments, color: this.materials.pineGreen },
-            { radius: 2.0, height: 1.8, y: 3.8, segments: this.settings.treeSegments - 2, color: this.materials.pineGreenLight },
-            { radius: 1.5, height: 1.6, y: 4.9, segments: this.settings.treeSegments - 4, color: this.materials.pineGreen },
-            { radius: 1.0, height: 1.4, y: 5.8, segments: this.settings.treeSegments - 6, color: this.materials.pineGreenLight },
-            { radius: 0.5, height: 1.2, y: 6.5, segments: this.settings.treeSegments - 8, color: this.materials.pineGreenTip }
-        ];
+        // === LAYERED BRANCHES ===
+        this.createLayeredBranches(treeGroup);
 
-        this.treeLevels = [];
-        
-        levels.forEach((level, index) => {
-            const coneGeometry = new THREE.ConeGeometry(
-                level.radius,
-                level.height,
-                level.segments,
-                1, // height segments
-                false, // open ended
-                0, // theta start
-                Math.PI * 2 // theta length
-            );
-            
-            // Add surface detail to geometry
-            const positionAttribute = coneGeometry.attributes.position;
-            const normalAttribute = coneGeometry.attributes.normal;
-            
-            for (let i = 0; i < positionAttribute.count; i++) {
-                const x = positionAttribute.getX(i);
-                const y = positionAttribute.getY(i);
-                const z = positionAttribute.getZ(i);
-                
-                // Calculate distance from center
-                const distance = Math.sqrt(x * x + z * z);
-                const heightRatio = y / level.height;
-                
-                // Add realistic pine needle effect
-                if (distance > 0.1) {
-                    const noise = Math.sin(y * 20 + distance * 10) * 0.05;
-                    const radialOffset = Math.sin(y * 15) * 0.1;
-                    
-                    const newX = x * (1 + noise) + (x / distance) * radialOffset;
-                    const newZ = z * (1 + noise) + (z / distance) * radialOffset;
-                    
-                    positionAttribute.setXYZ(i, newX, y, newZ);
-                }
-            }
-            
-            positionAttribute.needsUpdate = true;
-            coneGeometry.computeVertexNormals();
-            
-            // Realistic pine material
-            const coneMaterial = new THREE.MeshPhongMaterial({
-                color: level.color,
-                emissive: 0x006400,
-                emissiveIntensity: 0.1,
-                shininess: 30,
-                specular: 0x222222,
-                transparent: true,
-                opacity: 0.95,
-                side: THREE.DoubleSide
-            });
-            
-            const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-            cone.position.y = level.y;
-            cone.castShadow = true;
-            cone.receiveShadow = true;
-            treeGroup.add(cone);
-            
-            this.treeLevels.push({
-                mesh: cone,
-                baseScale: 1,
-                windPhase: Math.random() * Math.PI * 2
-            });
-        });
-
-        // === DETAILED STAR ===
-        this.createDetailedStar(treeGroup);
-
-        // === PINE NEEDLE CLUSTERS ===
-        this.createPineNeedles(treeGroup);
+        // === TREE TOP STAR ===
+        this.createTreeStar(treeGroup);
 
         this.tree = treeGroup;
         this.scene.add(treeGroup);
-
-        // Scale tree
         treeGroup.scale.setScalar(this.settings.treeScale);
     }
 
-    createDetailedStar(parent) {
-        // Complex star geometry
-        const starShape = new THREE.Shape();
-        const outerRadius = 0.5;
-        const innerRadius = 0.2;
-        const points = 5;
+    createLayeredBranches(parent) {
+        const layers = 6;
+        this.branches = [];
         
-        for (let i = 0; i < points * 2; i++) {
-            const radius = i % 2 === 0 ? outerRadius : innerRadius;
-            const angle = (Math.PI * i) / points;
+        for (let layer = 0; layer < layers; layer++) {
+            const layerHeight = 2.0 + layer * 0.8;
+            const layerRadius = 1.8 - layer * 0.25;
+            const branchCount = 8 + layer * 2;
             
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
+            // Create layer group
+            const layerGroup = new THREE.Group();
+            layerGroup.position.y = layerHeight;
             
-            if (i === 0) starShape.moveTo(x, y);
-            else starShape.lineTo(x, y);
+            for (let i = 0; i < branchCount; i++) {
+                const angle = (i / branchCount) * Math.PI * 2;
+                const branch = this.createSingleBranch(angle, layer);
+                layerGroup.add(branch);
+                
+                this.branches.push({
+                    mesh: branch,
+                    baseRotation: angle,
+                    layer: layer,
+                    swayPhase: Math.random() * Math.PI * 2
+                });
+            }
+            
+            parent.add(layerGroup);
+            
+            // Add some needles to this layer
+            this.addNeedleClusters(layerGroup, layer);
         }
-        starShape.closePath();
+    }
+
+    createSingleBranch(angle, layer) {
+        const branchGroup = new THREE.Group();
         
-        const extrudeSettings = {
-            depth: 0.2,
-            bevelEnabled: true,
-            bevelSegments: 3,
-            steps: 1,
-            bevelSize: 0.05,
-            bevelThickness: 0.05
-        };
+        // Branch curve
+        const curve = new THREE.QuadraticBezierCurve3(
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(Math.cos(angle) * 0.3, -0.2, Math.sin(angle) * 0.3),
+            new THREE.Vector3(Math.cos(angle) * (1.5 - layer * 0.2), -0.8, Math.sin(angle) * (1.5 - layer * 0.2))
+        );
         
-        const starGeometry = new THREE.ExtrudeGeometry(starShape, extrudeSettings);
+        // Tube geometry for branch
+        const tubeGeometry = new THREE.TubeGeometry(
+            curve,
+            5, // segments
+            0.08 - layer * 0.01, // radius
+            6, // radial segments
+            false // closed
+        );
         
-        // Realistic gold material
+        // Color based on layer
+        const greenColor = layer % 2 === 0 ? this.colors.treeGreen : this.colors.treeLightGreen;
+        
+        const branchMaterial = new THREE.MeshPhongMaterial({
+            color: greenColor,
+            shininess: 20,
+            side: THREE.DoubleSide
+        });
+        
+        const branch = new THREE.Mesh(tubeGeometry, branchMaterial);
+        branch.castShadow = true;
+        branch.receiveShadow = true;
+        
+        branchGroup.add(branch);
+        
+        // Add sub-branches
+        const subBranches = 2 + Math.floor(layer / 2);
+        for (let j = 0; j < subBranches; j++) {
+            const subBranch = this.createSubBranch();
+            subBranch.position.copy(curve.getPoint(0.3 + j * 0.3));
+            branchGroup.add(subBranch);
+        }
+        
+        return branchGroup;
+    }
+
+    createSubBranch() {
+        const length = 0.3 + Math.random() * 0.3;
+        const geometry = new THREE.ConeGeometry(0.03, length, 4);
+        geometry.rotateX(Math.PI / 2);
+        
+        const material = new THREE.MeshPhongMaterial({
+            color: this.colors.treeLightGreen,
+            side: THREE.DoubleSide
+        });
+        
+        const branch = new THREE.Mesh(geometry, material);
+        branch.castShadow = true;
+        
+        // Random rotation
+        branch.rotation.y = Math.random() * Math.PI;
+        branch.rotation.z = Math.random() * 0.5 - 0.25;
+        
+        return branch;
+    }
+
+    addNeedleClusters(parent, layer) {
+        const clusterCount = 10 + layer * 5;
+        
+        for (let i = 0; i < clusterCount; i++) {
+            const cluster = new THREE.Group();
+            
+            // Cluster position
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 0.5 + Math.random() * (1.0 - layer * 0.15);
+            
+            cluster.position.set(
+                Math.cos(angle) * distance,
+                Math.random() * 0.5 - 0.25,
+                Math.sin(angle) * distance
+            );
+            
+            // Create needles in cluster
+            const needles = 3 + Math.floor(Math.random() * 4);
+            for (let j = 0; j < needles; j++) {
+                const needle = this.createNeedle();
+                needle.position.set(
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1
+                );
+                cluster.add(needle);
+            }
+            
+            parent.add(cluster);
+        }
+    }
+
+    createNeedle() {
+        const geometry = new THREE.ConeGeometry(0.01, 0.15, 3);
+        const material = new THREE.MeshBasicMaterial({
+            color: this.colors.treeLightGreen
+        });
+        
+        const needle = new THREE.Mesh(geometry, material);
+        needle.rotation.x = Math.random() * Math.PI;
+        needle.rotation.y = Math.random() * Math.PI;
+        
+        return needle;
+    }
+
+    createTreeStar(parent) {
+        // Star geometry
+        const starGeometry = new THREE.SphereGeometry(0.15, 8, 6);
         const starMaterial = new THREE.MeshPhongMaterial({
-            color: this.materials.starGold,
-            emissive: this.materials.starGlow,
-            emissiveIntensity: 0.5,
-            shininess: 150,
-            specular: 0xFFD700,
-            metalness: 0.8,
-            roughness: 0.2
+            color: this.colors.starGold,
+            emissive: this.colors.starGlow,
+            emissiveIntensity: 0.3,
+            shininess: 100
         });
         
         const star = new THREE.Mesh(starGeometry, starMaterial);
-        star.position.y = 7.2;
-        star.rotation.x = Math.PI / 2;
+        star.position.y = 6.8;
         star.castShadow = true;
         parent.add(star);
         this.star = star;
         
-        // Create star glow effect
-        const glowGeometry = new THREE.SphereGeometry(0.7, 16, 16);
+        // Glow effect
+        const glowGeometry = new THREE.SphereGeometry(0.25, 12, 8);
         const glowMaterial = new THREE.MeshBasicMaterial({
-            color: 0xFFD700,
+            color: this.colors.starGlow,
             transparent: true,
-            opacity: 0.3,
+            opacity: 0.2,
             side: THREE.BackSide
         });
+        
         const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-        glow.position.y = 7.2;
+        glow.position.y = 6.8;
         parent.add(glow);
         this.starGlow = glow;
+        
+        // Light rays
+        this.createStarRays(parent);
     }
 
-    createPineNeedles(parent) {
-        const needleCount = 200;
-        const needleGeometry = new THREE.ConeGeometry(0.02, 0.2, 3);
-        const needleMaterial = new THREE.MeshPhongMaterial({
-            color: this.materials.pineGreenTip,
-            shininess: 10
-        });
-        
-        this.needles = [];
-        
-        for (let i = 0; i < needleCount; i++) {
-            const needle = new THREE.Mesh(needleGeometry, needleMaterial);
+    createStarRays(parent) {
+        const rayCount = 6;
+        for (let i = 0; i < rayCount; i++) {
+            const angle = (i / rayCount) * Math.PI * 2;
+            const length = 0.4;
             
-            // Position on tree surface
-            const level = Math.floor(Math.random() * 5);
-            const angle = Math.random() * Math.PI * 2;
-            const radius = (1.0 - level * 0.15) * (1.5 + Math.random() * 0.5);
-            const y = 2.5 + level * 1.0 + Math.random() * 0.8;
+            const rayGeometry = new THREE.ConeGeometry(0.02, length, 4);
+            rayGeometry.rotateX(Math.PI / 2);
             
-            needle.position.set(
-                Math.cos(angle) * radius,
-                y,
-                Math.sin(angle) * radius
-            );
+            const rayMaterial = new THREE.MeshBasicMaterial({
+                color: this.colors.starGold,
+                transparent: true,
+                opacity: 0.5
+            });
             
-            // Random rotation
-            needle.rotation.x = Math.random() * Math.PI;
-            needle.rotation.y = Math.random() * Math.PI;
-            needle.rotation.z = Math.random() * Math.PI;
+            const ray = new THREE.Mesh(rayGeometry, rayMaterial);
+            ray.position.y = 6.8;
+            ray.rotation.y = angle;
+            ray.rotation.z = Math.PI / 4;
             
-            needle.userData = {
-                windPhase: Math.random() * Math.PI * 2,
-                basePosition: needle.position.clone()
-            };
-            
-            parent.add(needle);
-            this.needles.push(needle);
+            parent.add(ray);
         }
     }
 
-    createRealisticDecorations() {
-        // === REALISTIC ORNAMENTS ===
-        this.createRealisticOrnaments();
-        
-        // === REALISTIC GARLAND ===
-        this.createRealisticGarland();
-        
-        // === TREE TOP RIBBON ===
-        this.createTreeRibbon();
+    createElegantDecorations() {
+        this.createOrnaments();
+        this.createGarland();
     }
 
-    createRealisticOrnaments() {
-        const ornamentCount = 30;
+    createOrnaments() {
         this.ornaments = [];
+        const ornamentCount = 25;
         
         const ornamentTypes = [
-            { geometry: new THREE.SphereGeometry(0.15, 16, 16), color: this.materials.ornamentRed, type: 'ball' },
-            { geometry: new THREE.SphereGeometry(0.12, 16, 16), color: this.materials.ornamentBlue, type: 'ball' },
-            { geometry: new THREE.SphereGeometry(0.18, 16, 16), color: this.materials.ornamentGold, type: 'ball' },
-            { geometry: new THREE.ConeGeometry(0.1, 0.25, 8), color: this.materials.ornamentSilver, type: 'cone' }
+            { shape: 'sphere', size: 0.1, color: this.colors.ornamentRed },
+            { shape: 'sphere', size: 0.08, color: this.colors.ornamentBlue },
+            { shape: 'sphere', size: 0.12, color: this.colors.ornamentGold },
+            { shape: 'cone', size: 0.15, color: this.colors.ornamentSilver },
+            { shape: 'sphere', size: 0.09, color: this.colors.ornamentGreen },
+            { shape: 'sphere', size: 0.11, color: this.colors.ornamentPurple }
         ];
         
         for (let i = 0; i < ornamentCount; i++) {
             const type = ornamentTypes[Math.floor(Math.random() * ornamentTypes.length)];
+            let geometry;
             
-            // Create shiny ornament material
-            const ornamentMaterial = new THREE.MeshPhongMaterial({
+            if (type.shape === 'sphere') {
+                geometry = new THREE.SphereGeometry(type.size, 12, 10);
+            } else {
+                geometry = new THREE.ConeGeometry(type.size * 0.4, type.size * 1.5, 8);
+            }
+            
+            const material = new THREE.MeshPhongMaterial({
                 color: type.color,
+                shininess: 80,
+                specular: 0x333333,
                 emissive: type.color,
-                emissiveIntensity: 0.2,
-                shininess: 100,
-                specular: 0xFFFFFF,
-                transparent: true,
-                opacity: 0.95
+                emissiveIntensity: 0.1
             });
             
-            const ornament = new THREE.Mesh(type.geometry, ornamentMaterial);
+            const ornament = new THREE.Mesh(geometry, material);
             
             // Position on tree
-            const level = Math.floor(Math.random() * 5);
+            const layer = Math.floor(Math.random() * 4) + 1;
             const angle = Math.random() * Math.PI * 2;
-            const radius = (0.8 - level * 0.1) * (1.0 + Math.random() * 0.5);
-            const y = 2.5 + level * 1.0 + Math.random() * 0.8;
+            const distance = 0.8 - layer * 0.15;
+            const height = 1.5 + layer * 1.0 + Math.random() * 0.5;
             
             ornament.position.set(
-                Math.cos(angle) * radius,
-                y,
-                Math.sin(angle) * radius
+                Math.cos(angle) * distance,
+                height,
+                Math.sin(angle) * distance
             );
             
-            // Add hook
-            const hookGeometry = new THREE.CylinderGeometry(0.01, 0.01, 0.1, 6);
-            const hookMaterial = new THREE.MeshBasicMaterial({ color: 0xAAAAAA });
+            ornament.castShadow = true;
+            
+            // Hook
+            const hookGeometry = new THREE.CylinderGeometry(0.008, 0.008, 0.05, 6);
+            const hookMaterial = new THREE.MeshBasicMaterial({ color: 0xCCCCCC });
             const hook = new THREE.Mesh(hookGeometry, hookMaterial);
-            hook.position.y = 0.1;
+            hook.position.y = type.size + 0.03;
             ornament.add(hook);
             
-            ornament.castShadow = true;
             ornament.userData = {
-                type: 'ornament',
-                rotationSpeed: 0.01 + Math.random() * 0.02,
-                floatSpeed: Math.random() * 0.005,
+                rotationSpeed: 0.005 + Math.random() * 0.01,
                 floatPhase: Math.random() * Math.PI * 2,
-                baseY: y
+                baseY: height,
+                pulsePhase: Math.random() * Math.PI * 2
             };
             
             this.scene.add(ornament);
@@ -465,94 +470,69 @@ class RealisticChristmasTree {
         }
     }
 
-    createRealisticGarland() {
-        const garlandPoints = [];
-        const segments = 50;
+    createGarland() {
+        const points = [];
+        const segments = 40;
         
-        // Create spiral garland
+        // Spiral garland
         for (let i = 0; i <= segments; i++) {
             const progress = i / segments;
-            const angle = progress * Math.PI * 2 * 3; // 3 turns
+            const angle = progress * Math.PI * 2 * 2.5;
             
-            // Spiral parameters
-            const radius = 1.8 * (1 - progress * 0.3);
-            const y = 2.0 + progress * 5.0;
+            const radius = 1.2 * (1 - progress * 0.4);
+            const height = 1.2 + progress * 5.0;
             
-            garlandPoints.push(
+            points.push(
                 new THREE.Vector3(
                     Math.cos(angle) * radius,
-                    y,
+                    height,
                     Math.sin(angle) * radius
                 )
             );
         }
         
-        const geometry = new THREE.BufferGeometry().setFromPoints(garlandPoints);
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const material = new THREE.LineBasicMaterial({
             color: 0xFF4444,
-            linewidth: 2,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.7
         });
         
         this.garland = new THREE.Line(geometry, material);
         this.scene.add(this.garland);
         
-        // Add garland bulbs
-        this.garlandBulbs = [];
-        for (let i = 0; i < segments; i += 3) {
-            const point = garlandPoints[i];
-            const bulbGeometry = new THREE.SphereGeometry(0.08, 8, 8);
-            const bulbMaterial = new THREE.MeshPhongMaterial({
+        // Garland lights
+        this.garlandLights = [];
+        for (let i = 0; i < segments; i += 2) {
+            const point = points[i];
+            const lightGeometry = new THREE.SphereGeometry(0.05, 8, 8);
+            const lightMaterial = new THREE.MeshPhongMaterial({
                 color: Math.random() > 0.5 ? 0xFF4444 : 0x44FF44,
                 emissive: Math.random() > 0.5 ? 0xFF4444 : 0x44FF44,
-                emissiveIntensity: 0.5,
-                shininess: 100
+                emissiveIntensity: 0.3
             });
             
-            const bulb = new THREE.Mesh(bulbGeometry, bulbMaterial);
-            bulb.position.copy(point);
-            this.scene.add(bulb);
-            this.garlandBulbs.push(bulb);
+            const light = new THREE.Mesh(lightGeometry, lightMaterial);
+            light.position.copy(point);
+            this.scene.add(light);
+            this.garlandLights.push(light);
         }
     }
 
-    createTreeRibbon() {
-        const ribbonWidth = 0.1;
-        const ribbonHeight = 4.0;
-        const ribbonGeometry = new THREE.PlaneGeometry(ribbonWidth, ribbonHeight);
-        const ribbonMaterial = new THREE.MeshPhongMaterial({
-            color: this.materials.ribbonRed,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.9
-        });
-        
-        const ribbon = new THREE.Mesh(ribbonGeometry, ribbonMaterial);
-        ribbon.position.y = ribbonHeight / 2 + 1;
-        ribbon.rotation.y = Math.PI / 4;
-        this.scene.add(ribbon);
-        
-        // Add second ribbon
-        const ribbon2 = ribbon.clone();
-        ribbon2.rotation.y = -Math.PI / 4;
-        this.scene.add(ribbon2);
-    }
-
-    createRealisticGifts() {
+    createElegantGifts() {
         const giftConfigs = [
-            { x: -2.0, z: -1.5, color: this.materials.ornamentRed, size: 0.6, ribbon: this.materials.ribbonGold },
-            { x: 1.8, z: -1.0, color: this.materials.ornamentBlue, size: 0.5, ribbon: 0xFFFFFF },
-            { x: -1.2, z: 1.8, color: this.materials.ornamentGold, size: 0.7, ribbon: this.materials.ribbonRed },
-            { x: 1.5, z: 1.2, color: 0x9C27B0, size: 0.55, ribbon: 0xFFFFFF }
+            { x: -1.8, z: -1.2, color: this.colors.ornamentRed, size: 0.5, ribbon: this.colors.ribbonGold },
+            { x: 1.6, z: -0.9, color: this.colors.ornamentBlue, size: 0.45, ribbon: this.colors.ribbonSilver },
+            { x: -1.0, z: 1.6, color: this.colors.ornamentGold, size: 0.6, ribbon: this.colors.ornamentRed },
+            { x: 1.2, z: 1.0, color: this.colors.ornamentPurple, size: 0.4, ribbon: this.colors.ribbonGold }
         ];
         
         this.gifts = [];
         
         giftConfigs.forEach((config, index) => {
-            const gift = this.createDetailedGift(
+            const gift = this.createGift(
                 config.x,
-                0.2,
+                0.15,
                 config.z,
                 config.color,
                 config.size,
@@ -562,176 +542,129 @@ class RealisticChristmasTree {
             this.gifts.push(gift);
             this.scene.add(gift);
             
-            // Animate entrance
-            this.animateGiftEntrance(gift, index * 300);
+            this.animateGiftEntrance(gift, index * 200);
         });
     }
 
-    createDetailedGift(x, y, z, color, size, ribbonColor) {
+    createGift(x, y, z, color, size, ribbonColor) {
         const giftGroup = new THREE.Group();
         
-        // Main gift box
+        // Box
         const boxGeometry = new THREE.BoxGeometry(size, size, size);
         const boxMaterial = new THREE.MeshPhongMaterial({
             color: color,
-            shininess: 80,
-            specular: 0x333333,
-            emissive: color,
-            emissiveIntensity: 0.1
+            shininess: 60
         });
         const box = new THREE.Mesh(boxGeometry, boxMaterial);
         box.castShadow = true;
         box.receiveShadow = true;
         giftGroup.add(box);
         
-        // Ribbons with thickness
-        const ribbonGeometry = new THREE.BoxGeometry(size * 1.3, size * 0.08, size * 0.08);
+        // Ribbons
+        const ribbonGeometry = new THREE.BoxGeometry(size * 1.2, size * 0.1, size * 0.1);
         const ribbonMaterial = new THREE.MeshPhongMaterial({
             color: ribbonColor,
-            shininess: 150,
-            specular: 0x888888
+            shininess: 100
         });
         
-        // Horizontal ribbon
         const ribbonH = new THREE.Mesh(ribbonGeometry, ribbonMaterial);
-        ribbonH.castShadow = true;
-        giftGroup.add(ribbonH);
+        const ribbonV = ribbonH.clone();
+        ribbonV.rotation.y = Math.PI / 2;
         
-        // Vertical ribbon
-        const ribbonVGeometry = new THREE.BoxGeometry(size * 0.08, size * 1.3, size * 0.08);
-        const ribbonV = new THREE.Mesh(ribbonVGeometry, ribbonMaterial);
-        ribbonV.castShadow = true;
+        giftGroup.add(ribbonH);
         giftGroup.add(ribbonV);
         
-        // Bow on top
-        this.createDetailedBow(giftGroup, size, ribbonColor);
+        // Bow
+        this.createBow(giftGroup, size * 0.6, ribbonColor);
         
         giftGroup.position.set(x, y + size / 2, z);
         
         giftGroup.userData = {
-            type: 'gift',
             baseY: y + size / 2,
             floatPhase: Math.random() * Math.PI * 2,
-            rotationSpeed: 0.005 + Math.random() * 0.01,
-            wobblePhase: Math.random() * Math.PI * 2
+            rotationSpeed: 0.003 + Math.random() * 0.005
         };
         
         return giftGroup;
     }
 
-    createDetailedBow(parent, giftSize, ribbonColor) {
+    createBow(parent, size, color) {
         const bowGroup = new THREE.Group();
         
-        // Bow loops
-        const loopGeometry = new THREE.TorusGeometry(giftSize * 0.15, giftSize * 0.05, 8, 12);
+        // Loops
+        const loopGeometry = new THREE.TorusGeometry(size * 0.2, size * 0.05, 6, 10);
         const loopMaterial = new THREE.MeshPhongMaterial({
-            color: ribbonColor,
-            shininess: 120
+            color: color,
+            shininess: 80
         });
         
         const loop1 = new THREE.Mesh(loopGeometry, loopMaterial);
         loop1.rotation.x = Math.PI / 2;
-        loop1.position.y = giftSize * 0.6;
+        loop1.position.y = size * 0.7;
         bowGroup.add(loop1);
         
         const loop2 = loop1.clone();
         loop2.rotation.z = Math.PI / 2;
         bowGroup.add(loop2);
         
-        // Bow center
-        const centerGeometry = new THREE.SphereGeometry(giftSize * 0.08, 10, 10);
+        // Center
+        const centerGeometry = new THREE.SphereGeometry(size * 0.08, 8, 8);
         const center = new THREE.Mesh(centerGeometry, loopMaterial);
-        center.position.y = giftSize * 0.6;
+        center.position.y = size * 0.7;
         bowGroup.add(center);
         
         parent.add(bowGroup);
     }
 
-    createRealisticSnow() {
-        const snowflakeCount = 500;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(snowflakeCount * 3);
-        const sizes = new Float32Array(snowflakeCount);
-        const velocities = new Float32Array(snowflakeCount);
-        
-        for (let i = 0; i < snowflakeCount; i++) {
-            positions[i * 3] = (Math.random() - 0.5) * 20;     // x
-            positions[i * 3 + 1] = Math.random() * 15;        // y
-            positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z
-            
-            sizes[i] = Math.random() * 0.1 + 0.05;            // size
-            velocities[i] = Math.random() * 0.02 + 0.01;      // fall speed
-        }
-        
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-        
-        const material = new THREE.PointsMaterial({
-            color: 0xFFFFFF,
-            size: 0.1,
-            transparent: true,
-            opacity: 0.9,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        
-        this.snow = new THREE.Points(geometry, material);
-        this.snow.userData = {
-            velocities: velocities,
-            positions: positions
-        };
-        this.scene.add(this.snow);
-    }
-
-    createGround() {
-        const groundGeometry = new THREE.CircleGeometry(10, 32);
+    createElegantGround() {
+        // Ground
+        const groundGeometry = new THREE.CircleGeometry(8, 24);
         const groundMaterial = new THREE.MeshPhongMaterial({
-            color: 0x1A237E,
-            shininess: 10,
-            side: THREE.DoubleSide
+            color: this.colors.groundBlue,
+            shininess: 5
         });
         
         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
         ground.rotation.x = -Math.PI / 2;
-        ground.position.y = -0.1;
+        ground.position.y = -0.05;
         ground.receiveShadow = true;
         this.scene.add(ground);
         
-        // Add snow on ground
-        const snowGeometry = new THREE.CircleGeometry(8, 32);
+        // Snow patch
+        const snowGeometry = new THREE.CircleGeometry(6, 20);
         const snowMaterial = new THREE.MeshPhongMaterial({
-            color: 0xFFFFFF,
+            color: this.colors.groundSnow,
             transparent: true,
-            opacity: 0.8,
-            side: THREE.DoubleSide
+            opacity: 0.7
         });
         
-        const snowGround = new THREE.Mesh(snowGeometry, snowMaterial);
-        snowGround.rotation.x = -Math.PI / 2;
-        snowGround.position.y = -0.09;
-        this.scene.add(snowGround);
+        const snow = new THREE.Mesh(snowGeometry, snowMaterial);
+        snow.rotation.x = -Math.PI / 2;
+        snow.position.y = -0.04;
+        this.scene.add(snow);
     }
 
-    animateGiftEntrance(gift, delay = 0) {
-        const targetY = gift.position.y;
-        gift.position.y = -3;
-        gift.scale.set(0.1, 0.1, 0.1);
-        
+    animateGiftEntrance(gift, delay) {
         setTimeout(() => {
+            const startY = -2;
+            const targetY = gift.position.y;
+            gift.position.y = startY;
+            gift.scale.set(0.1, 0.1, 0.1);
+            
             const startTime = Date.now();
-            const duration = 1500;
+            const duration = 1200;
             
             const animate = () => {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 
-                // Elastic ease out with bounce
-                const ease = 1 - Math.pow(1 - progress, 4);
-                const bounce = Math.sin(progress * Math.PI * 4) * (1 - progress) * 0.5;
+                // Elastic ease out
+                const ease = 1 - Math.pow(1 - progress, 3);
+                const bounce = Math.sin(progress * Math.PI * 3) * (1 - progress) * 0.3;
                 
-                gift.position.y = -3 + (targetY + 3) * ease + bounce;
+                gift.position.y = startY + (targetY - startY) * ease + bounce;
                 gift.scale.setScalar(0.1 + 0.9 * ease);
-                gift.rotation.y = progress * Math.PI * 8;
+                gift.rotation.y = progress * Math.PI * 4;
                 
                 if (progress < 1) {
                     requestAnimationFrame(animate);
@@ -749,47 +682,34 @@ class RealisticChristmasTree {
     }
 
     update() {
-        const deltaTime = 0.016; // 60fps
-        this.time += deltaTime * this.settings.animationSpeed;
+        const delta = 0.016;
+        this.time += delta * this.settings.animationSpeed;
         
-        // === TREE WIND ANIMATION ===
-        if (this.treeLevels && this.settings.windEnabled) {
-            const windStrength = Math.sin(this.time * 0.5) * 0.02;
-            
-            this.treeLevels.forEach((level, index) => {
-                const windPhase = level.windPhase + this.time * (0.5 + index * 0.1);
-                const wind = Math.sin(windPhase) * windStrength * (1 - index * 0.2);
+        // === BRANCHES SWAY ===
+        if (this.branches && this.settings.windEnabled) {
+            this.branches.forEach(branch => {
+                const sway = Math.sin(this.time * 0.8 + branch.swayPhase) * 0.02;
+                const verticalSway = Math.sin(this.time * 0.5 + branch.swayPhase) * 0.01;
                 
-                level.mesh.rotation.z = wind;
-                level.mesh.rotation.x = wind * 0.5;
-            });
-        }
-        
-        // === NEEDLE WIND ANIMATION ===
-        if (this.needles && this.settings.windEnabled) {
-            this.needles.forEach(needle => {
-                const windPhase = needle.userData.windPhase + this.time * 2;
-                const wind = Math.sin(windPhase) * 0.1;
-                
-                needle.rotation.x += wind * deltaTime;
-                needle.rotation.y += wind * 0.5 * deltaTime;
+                branch.mesh.rotation.z = sway * (1 - branch.layer * 0.1);
+                branch.mesh.position.y += verticalSway * 0.1;
             });
         }
         
         // === STAR ANIMATION ===
         if (this.star) {
-            this.star.rotation.y += deltaTime;
-            const pulse = Math.sin(this.time * 2) * 0.15 + 0.85;
+            this.star.rotation.y += delta * 0.5;
+            
+            const pulse = Math.sin(this.time * 1.5) * 0.1 + 0.9;
             this.star.scale.setScalar(pulse);
             
             if (this.starGlow) {
-                this.starGlow.scale.setScalar(1 + Math.sin(this.time * 3) * 0.2);
-                this.starGlow.rotation.y += deltaTime * 0.3;
-            }
-            
-            // Star glow intensity
-            if (this.star.material.emissiveIntensity !== undefined) {
-                this.star.material.emissiveIntensity = 0.5 + Math.sin(this.time * 3) * 0.3;
+                const glowPulse = Math.sin(this.time * 2) * 0.15 + 0.85;
+                this.starGlow.scale.setScalar(glowPulse);
+                
+                // Color pulse
+                const intensity = 0.2 + Math.sin(this.time * 1.8) * 0.1;
+                this.star.material.emissiveIntensity = intensity;
             }
         }
         
@@ -798,26 +718,32 @@ class RealisticChristmasTree {
             this.ornaments.forEach(ornament => {
                 ornament.rotation.y += ornament.userData.rotationSpeed;
                 
-                // Gentle floating
-                const float = Math.sin(this.time * ornament.userData.floatSpeed + 
-                    ornament.userData.floatPhase) * 0.05;
+                // Gentle float
+                const float = Math.sin(this.time * 0.5 + ornament.userData.floatPhase) * 0.03;
                 ornament.position.y = ornament.userData.baseY + float;
                 
                 // Gentle swing
-                ornament.rotation.x = Math.sin(this.time * 0.3 + ornament.userData.floatPhase) * 0.05;
+                const swing = Math.sin(this.time * 0.3 + ornament.userData.floatPhase) * 0.04;
+                ornament.rotation.x = swing;
+                
+                // Pulse glow
+                const pulse = Math.sin(this.time * 1.2 + ornament.userData.pulsePhase) * 0.1 + 0.9;
+                ornament.material.emissiveIntensity = 0.1 * pulse;
             });
         }
         
-        // === GARLAND BULBS ANIMATION ===
-        if (this.garlandBulbs) {
-            this.garlandBulbs.forEach((bulb, index) => {
-                const pulse = Math.sin(this.time * 3 + index * 0.3) * 0.3 + 0.7;
-                bulb.scale.setScalar(pulse);
+        // === GARLAND LIGHTS ===
+        if (this.garlandLights) {
+            this.garlandLights.forEach((light, index) => {
+                const pulse = Math.sin(this.time * 2 + index * 0.3) * 0.2 + 0.8;
+                light.scale.setScalar(pulse);
                 
-                // Twinkle effect
-                if (Math.random() > 0.98) {
-                    bulb.visible = !bulb.visible;
-                    setTimeout(() => bulb.visible = true, 50);
+                // Random twinkle
+                if (Math.random() > 0.99) {
+                    light.material.emissiveIntensity = 1;
+                    setTimeout(() => {
+                        light.material.emissiveIntensity = 0.3;
+                    }, 50);
                 }
             });
         }
@@ -826,49 +752,26 @@ class RealisticChristmasTree {
         this.gifts.forEach(gift => {
             gift.rotation.y += gift.userData.rotationSpeed;
             
-            // Floating
-            const float = Math.sin(this.time + gift.userData.floatPhase) * 0.03;
+            const float = Math.sin(this.time + gift.userData.floatPhase) * 0.02;
             gift.position.y = gift.userData.baseY + float;
             
             // Gentle wobble
-            gift.rotation.z = Math.sin(this.time * 0.5 + gift.userData.wobblePhase) * 0.02;
+            const wobble = Math.sin(this.time * 0.4 + gift.userData.floatPhase) * 0.015;
+            gift.rotation.z = wobble;
         });
         
-        // === TREE LIGHT ANIMATION ===
-        if (this.treeLight) {
-            const lightPulse = Math.sin(this.time * 1.5) * 0.4 + 0.6;
-            this.treeLight.intensity = 1.0 + lightPulse * 0.5;
+        // === TREE LIGHT ===
+        if (this.treeLight && this.settings.lightsEnabled) {
+            const pulse = Math.sin(this.time * 0.8) * 0.2 + 0.8;
+            this.treeLight.intensity = 0.8 + pulse * 0.4;
             
-            // Color shift
-            const hue = (this.time * 0.02) % 1;
-            this.treeLight.color.setHSL(hue, 0.8, 0.7);
+            // Subtle color shift
+            const hueShift = Math.sin(this.time * 0.1) * 0.05;
+            const color = new THREE.Color(0x4CAF50).offsetHSL(hueShift, 0, 0);
+            this.treeLight.color.copy(color);
         }
         
-        // === SNOW ANIMATION ===
-        if (this.snow && this.settings.snowEnabled) {
-            const positions = this.snow.userData.positions;
-            const velocities = this.snow.userData.velocities;
-            
-            for (let i = 0; i < positions.length / 3; i++) {
-                // Move down
-                positions[i * 3 + 1] -= velocities[i];
-                
-                // Gentle horizontal drift
-                positions[i * 3] += Math.sin(this.time * 0.5 + i) * 0.005;
-                positions[i * 3 + 2] += Math.cos(this.time * 0.5 + i) * 0.005;
-                
-                // Reset if too low
-                if (positions[i * 3 + 1] < -5) {
-                    positions[i * 3] = (Math.random() - 0.5) * 20;
-                    positions[i * 3 + 1] = 15;
-                    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
-                }
-            }
-            
-            this.snow.geometry.attributes.position.needsUpdate = true;
-        }
-        
-        // === CONTROLS UPDATE ===
+        // === CONTROLS ===
         if (this.controls) {
             this.controls.update();
         }
@@ -881,7 +784,7 @@ class RealisticChristmasTree {
     }
 
     setupResizeHandler() {
-        window.addEventListener('resize', () => {
+        const resize = () => {
             if (!this.renderer || !this.camera) return;
             
             const canvas = this.renderer.domElement;
@@ -891,58 +794,59 @@ class RealisticChristmasTree {
             this.camera.aspect = width / height;
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(width, height);
-        });
+        };
+        
+        window.addEventListener('resize', resize);
+        this.resizeHandler = resize;
     }
 
     // === PUBLIC API ===
     
     addGift() {
         const colors = [
-            this.materials.ornamentRed,
-            this.materials.ornamentBlue,
-            this.materials.ornamentGold,
-            0x9C27B0, // Purple
-            0x4CAF50, // Green
-            0xFF9800  // Orange
+            this.colors.ornamentRed,
+            this.colors.ornamentBlue,
+            this.colors.ornamentGold,
+            this.colors.ornamentPurple,
+            this.colors.ornamentGreen,
+            this.colors.treeLightGreen
         ];
         
-        const ribbonColors = [0xFFFFFF, 0xFFD700, 0xF44336, 0x2196F3];
+        const ribbonColors = [this.colors.ribbonGold, this.colors.ribbonSilver, 0xFFFFFF];
         
         const color = colors[Math.floor(Math.random() * colors.length)];
         const ribbonColor = ribbonColors[Math.floor(Math.random() * ribbonColors.length)];
-        const size = 0.4 + Math.random() * 0.3;
-        const x = (Math.random() - 0.5) * 4;
-        const z = (Math.random() - 0.5) * 4;
+        const size = 0.35 + Math.random() * 0.25;
+        const x = (Math.random() - 0.5) * 3;
+        const z = (Math.random() - 0.5) * 3;
         
-        const gift = this.createDetailedGift(x, 0.2, z, color, size, ribbonColor);
+        const gift = this.createGift(x, 0.15, z, color, size, ribbonColor);
         this.gifts.push(gift);
         this.scene.add(gift);
         
-        // Animate entrance
         this.animateGiftEntrance(gift, 0);
         
         return gift;
     }
     
-    toggleSnow() {
-        if (this.snow) {
-            this.settings.snowEnabled = !this.settings.snowEnabled;
-            this.snow.visible = this.settings.snowEnabled;
-            return this.settings.snowEnabled;
+    toggleLights() {
+        this.settings.lightsEnabled = !this.settings.lightsEnabled;
+        if (this.treeLight) {
+            this.treeLight.visible = this.settings.lightsEnabled;
         }
-        return false;
-    }
-    
-    setTreeScale(scale) {
-        this.settings.treeScale = Math.max(0.5, Math.min(scale, 2.0));
-        if (this.tree) {
-            this.tree.scale.setScalar(this.settings.treeScale);
-        }
+        return this.settings.lightsEnabled;
     }
     
     toggleWind() {
         this.settings.windEnabled = !this.settings.windEnabled;
         return this.settings.windEnabled;
+    }
+    
+    setScale(scale) {
+        this.settings.treeScale = Math.max(0.6, Math.min(scale, 1.5));
+        if (this.tree) {
+            this.tree.scale.setScalar(this.settings.treeScale);
+        }
     }
     
     dispose() {
@@ -954,29 +858,33 @@ class RealisticChristmasTree {
             this.renderer.dispose();
         }
         
-        console.log('🎄 Realistic tree disposed');
+        if (this.resizeHandler) {
+            window.removeEventListener('resize', this.resizeHandler);
+        }
+        
+        console.log('🎄 Tree disposed');
     }
 }
 
-// === GLOBAL INITIALIZATION ===
-window.initTree3D = function() {
-    console.log('🎄 Initializing Realistic Christmas Tree...');
+// === INITIALIZATION ===
+window.initElegantTree = function() {
+    console.log('🎄 Initializing Elegant Christmas Tree...');
     
     try {
-        const realisticTree = new RealisticChristmasTree();
-        realisticTree.init('tree-canvas').then(tree => {
-            window.RealisticTree = tree;
-            console.log('✅ Realistic Tree ready!');
+        const tree = new ElegantChristmasTree();
+        tree.init('tree-canvas').then(initializedTree => {
+            window.ElegantTree = initializedTree;
+            console.log('✅ Elegant Tree ready!');
             
             // Connect UI
             const addBtn = document.getElementById('add-gift-btn');
             if (addBtn) {
                 addBtn.addEventListener('click', () => {
-                    tree.addGift();
+                    initializedTree.addGift();
                     
-                    // Haptic feedback for Telegram
-                    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
-                        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                    // Haptic feedback
+                    if (window.Telegram?.WebApp?.HapticFeedback) {
+                        Telegram.WebApp.HapticFeedback.impactOccurred('light');
                     }
                 });
             }
@@ -990,11 +898,11 @@ window.initTree3D = function() {
     }
 };
 
-// Auto-init
+// Auto-initialize
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', window.initTree3D);
+    document.addEventListener('DOMContentLoaded', window.initElegantTree);
 } else {
-    setTimeout(window.initTree3D, 100);
+    setTimeout(window.initElegantTree, 100);
 }
 
-console.log('🎄 Realistic Detailed Christmas Tree script loaded!');
+console.log('🎄 Elegant Christmas Tree script loaded!');
