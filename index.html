@@ -2,166 +2,735 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title> Elka Battle</title>
-    <meta name="description" content="Новогодняя битва ёлок - украшай, соревнуйся, побеждай!">
-    <meta name="theme-color" content="#0d1525">
-    
-    <!-- Telegram WebApp настройки -->
-    <meta name="telegram-web-app-title" content="Elka Battle">
-    <meta name="telegram-web-app-capable" content="yes">
-    <meta name="telegram-web-app-status-bar-style" content="black">
-    <meta name="telegram-web-app-orientation" content="portrait">
-    
-    <!-- Стили -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Three.js с фиксом для мобильных -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Наша История ❤️</title>
+    <style>
+        /* СБРОС И БАЗОВЫЕ СТИЛИ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #FF6B8B, #FF8E53, #4A90E2, #7B68EE);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* КОНТЕЙНЕР */
+        .container {
+            width: 95%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            margin: 20px;
+        }
+        
+        /* ЗАГОЛОВОК */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .title {
+            color: #FF3B6B;
+            font-size: 2.8rem;
+            font-weight: 900;
+            text-shadow: 3px 3px 0 rgba(255, 107, 139, 0.2);
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        
+        /* ФОТО В РАМКЕ */
+        .photo-frame {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 30px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.25),
+                0 0 0 10px white,
+                0 0 0 12px #FF3B6B,
+                0 0 0 15px white;
+            animation: float 3s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(5deg); }
+            50% { transform: translateY(-10px) rotateX(5deg); }
+        }
+        
+        .photo-frame::before {
+            content: '❤️';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            z-index: 20;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+        }
+        
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #FFD6E0, #FFECF1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #FF3B6B;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .photo-placeholder .icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        
+        .photo-placeholder .tip {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        /* КНОПКИ */
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #FF3B6B, #FF6B8B);
+            color: white;
+            border: none;
+            padding: 22px 25px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 
+                0 8px 20px rgba(255, 59, 107, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.1) inset,
+                0 -2px 4px rgba(255, 255, 255, 0.2) inset;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent);
+            transition: left 0.7s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+            box-shadow: 
+                0 4px 10px rgba(255, 59, 107, 0.2),
+                0 1px 2px rgba(0, 0, 0, 0.1) inset,
+                0 -1px 2px rgba(255, 255, 255, 0.1) inset;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #4A90E2, #7B68EE);
+            box-shadow: 
+                0 8px 20px rgba(74, 144, 226, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.1) inset,
+                0 -2px 4px rgba(255, 255, 255, 0.2) inset;
+        }
+        
+        .btn-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+        }
+        
+        /* ФУТЕР */
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #888;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .love-note {
+            background: rgba(255, 235, 240, 0.8);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #FF3B6B;
+            border: 2px dashed rgba(255, 59, 107, 0.3);
+        }
+        
+        /* АНИМАЦИИ ФОНА */
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: heartFloat 8s linear infinite;
+        }
+        
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 59, 107, 0.2);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            color: #FF3B6B;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .close-btn:active {
+            background: #e0e0e0;
+            transform: scale(0.95);
+        }
+        
+        /* АДАПТАЦИЯ ПОД МАЛЕНЬКИЕ ЭКРАНЫ */
+        @media (max-width: 380px) {
+            .container {
+                padding: 20px;
+                border-radius: 25px;
+            }
+            
+            .title {
+                font-size: 2.3rem;
+            }
+            
+            .photo-frame {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .btn {
+                padding: 20px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            .photo-frame {
+                width: 180px;
+                height: 180px;
+                margin-bottom: 20px;
+            }
+            
+            .buttons {
+                margin: 20px 0;
+                gap: 12px;
+            }
+        }
 
-    <!-- Telegram SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        /* ФОТО В РАМКЕ - ПЕРЕПИСАННАЯ ВЕРСИЯ */
+.photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 30px;
+    width: 100%;
+    max-width: 280px;
+    height: 280px;
+    position: relative;
+}
+
+.photo-frame {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 
+        0 20px 40px rgba(255, 59, 107, 0.3),
+        0 0 0 15px white,
+        0 0 0 17px #FF3B6B,
+        0 0 0 20px white;
+    animation: float 3s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+.photo-frame::before {
+    content: '❤️';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.2rem;
+    z-index: 20;
+    filter: drop-shadow(0 5px 15px rgba(255, 59, 107, 0.4));
+    background: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #FF3B6B;
+}
+
+.our-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FFD6E0, #FFECF1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #FF3B6B;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 20px;
+}
+
+.photo-placeholder .icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.photo-placeholder .tip {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+    </style>
 </head>
 <body>
-    <!-- Загрузочный экран -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loader">
-            <div class="tree-icon"></div>
-            <div class="loader-text">Elka Battle</div>
+    <!-- ФОНОВЫЕ СЕРДЕЧКИ -->
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <div class="container">
+        <!-- ЗАГОЛОВОК -->
+        <div class="header">
+            <h1 class="title">НАША ИГРА</h1>
+            <p class="subtitle">Пройти можно только вдвоём</p>
         </div>
-        <div class="loading-progress">
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
-            </div>
-            <div class="loading-status">Загрузка 3D графики...</div>
-        </div>
+        
+        <!-- ФОТО В РАМКЕ -->
+    <!-- ФОТО В РАМКЕ -->
+<div class="photo-container">
+    <div class="photo-frame">
+        <img src="photo_2025-12-26_20-51-16.jpg" 
+             class="our-photo"
+             alt="Наше фото"
+             style="width: 100%; height: 100%; object-fit: cover; display: block;">
     </div>
+</div>
 
-    <!-- Основное приложение -->
-    <div id="app" class="app-container">
-        <!-- Верхняя панель (упрощённая) -->
-        <header class="top-bar">
-            <div class="balance">
-                <span class="balance-item">
-                    <i class="fas fa-star"></i>
-                    <span id="stars-balance">1500</span>
-                </span>
-                <span class="balance-item">
-                    <i class="fab fa-telegram"></i>
-                    <span id="ton-balance">0.005</span>
-                </span>
-            </div>
-            <div class="user-info">
-                <div class="user-avatar" id="user-avatar"></div>
-                <div class="user-name" id="username">@player</div>
-            </div>
-        </header>
-
-        <!-- Таймер -->
-        <div class="timer-section">
-            <div class="timer-card">
-                <div class="timer-icon"></div>
-                <div class="timer-content">
-                    <div class="timer-label">ПОДАРКИ ОТКРОЮТСЯ</div>
-                    <div class="timer-display" id="gift-timer">01.01.2025 00:00</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3D Контейнер -->
-        <main class="main-area">
-            <div id="tree-container" class="tree-container">
-                <canvas id="tree-canvas"></canvas>
-                
-                <!-- Статистика над ёлкой -->
-                <div class="tree-stats-overlay">
-                    <div class="stat">
-                        <span class="stat-icon"></span>
-                        <span class="stat-value" id="gift-count">0</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-icon"></span>
-                        <span class="stat-value" id="tree-score">0</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-icon"></span>
-                        <span class="stat-value" id="view-count">0</span>
-                    </div>
-                </div>
-                
-                <!-- Подсказка по управлению (только на десктопе) -->
-                <div class="controls-hint desktop-only">
-                    <p><i class="fas fa-mouse-pointer"></i> Перетащите для вращения</p>
-                    <p><i class="fas fa-search"></i> Колесико для масштабирования</p>
-                </div>
-            </div>
+        <!-- КНОПКИ -->
+        <div class="buttons">
+            <button class="btn" onclick="startGame()">
+                <span class="btn-icon">🎮</span>
+                НАЧАТЬ ИГРУ
+            </button>
             
-            <!-- Панель быстрых действий -->
-            <div class="quick-actions">
-                <button class="action-btn primary-action" id="add-gift-btn">
-                    <i class="fas fa-plus"></i>
-                    <span>Добавить подарок</span>
-                </button>
-                <button class="action-btn secondary-action" id="open-shop-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Магазин</span>
-                </button>
-            </div>
-        </main>
-
-        <!-- Нижняя навигация -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active" data-page="tree">
-                <i class="fas fa-tree"></i>
-                <span>Ёлка</span>
-            </a>
-            <a href="#" class="nav-item" data-page="shop">
-                <i class="fas fa-store"></i>
-                <span>Магазин</span>
-            </a>
-            <a href="#" class="nav-item" data-page="battle">
-                <i class="fas fa-trophy"></i>
-                <span>Баттлы</span>
-                <span class="nav-badge" id="battle-badge"></span>
-            </a>
-            <a href="#" class="nav-item" data-page="top">
-                <i class="fas fa-chart-line"></i>
-                <span>Топ-10</span>
-            </a>
-            <a href="#" class="nav-item" data-page="profile">
-                <i class="fas fa-user"></i>
-                <span>Профиль</span>
-            </a>
-        </nav>
+            <button class="btn btn-secondary" onclick="showMessage()">
+                <span class="btn-icon">💌</span>
+                ТАЙНОЕ ПОСЛАНИЕ
+            </button>
+        </div>
+        
+        <!-- ФУТЕР -->
+        <div class="footer">
+            <div class="love-note">❤️ Сделано специально для вас</div>
+            <p style="margin-top: 15px; font-size: 0.8rem;">
+                Для игры нужны два игрока<br>и одно устройство
+            </p>
+        </div>
     </div>
-
-    <!-- Модальные окна будут добавляться динамически -->
-
-    <!-- Скрипты -->
-    <script src="telegram-webapp.js"></script>
-    <script src="script.js"></script>
-    <script src="threejs-tree.js"></script>
-<script>
-    // Инициализация при загрузке
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(() => {
-            if (window.initTree3D) {
-                window.Tree3D = window.initTree3D();
-                console.log("🌲 Tree ready!");
-            }
-        }, 1000);
-    });
-    </script>
+    
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПОСЛАНИЯ -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">💌 Тайное послание</h2>
+                <button class="close-btn" onclick="closeMessage()">×</button>
+            </div>
+            <div id="messageContent" style="line-height: 1.6; color: #444;">
+                <!-- Сообщение появится здесь -->
+            </div>
+        </div>
+    </div>
+    
     <script>
-        // Принудительно расширяем на весь экран в Telegram
-        if (window.Telegram && Telegram.WebApp) {
-            Telegram.WebApp.expand();
-            Telegram.WebApp.setHeaderColor(
-secondary_bg_color);
-            Telegram.WebApp.setBackgroundColor("#0d1525");
-            Telegram.WebApp.enableClosingConfirmation();
+        // СОЗДАЕМ ПЛАВАЮЩИЕ СЕРДЕЧКИ
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartsCount = 15;
+            
+            for(let i = 0; i < heartsCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = ['❤️', '💖', '💝', '💗', '💓'][Math.floor(Math.random() * 5)];
+                
+                // Случайные параметры
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 16) + 'px';
+                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                
+                heartsContainer.appendChild(heart);
+            }
         }
+        
+        // БАЗА РОМАНТИЧНЫХ ПОСЛАНИЙ
+        const secretMessages = [
+            "Ты — самое лучшее, что случалось со мной. Каждый момент с тобой бесценен 💖",
+            "Когда мы вместе, весь мир становится ярче. Спасибо, что ты есть в моей жизни ✨",
+            "Твоя улыбка — мой самый любимый вид. Люблю тебя больше, чем вчера, но меньше, чем завтра 😊",
+            "Мы как две половинки одного целого. Вместе мы можем всё, что угодно 💪",
+            "Каждый день с тобой — это новая страница нашей красивой истории. Пишем её вместе 📖",
+            "Ты делаешь меня лучше, сильнее и счастливее. Спасибо за всё, мой любимый человек ❤️",
+            "Даже в самой сложной игре мы проходим уровни вместе. Так и в жизни — мы команда 🎮",
+            "Твоя рука в моей — это самое безопасное место на земле. Люблю наши объятия 🤗",
+            "Ты — мое самое большое везение. Каждый день благодарен судьбе за тебя 🌟",
+            "Вместе мы создаём свою вселенную, где правит любовь. Это наше королевство 👑"
+        ];
+        
+        // ЗАГРУЗКА ФОТО
+        function setupPhotoUpload() {
+            const placeholder = document.getElementById('photoPlaceholder');
+            
+            placeholder.addEventListener('click', function() {
+                // На мобильных устройствах можно загрузить фото
+                if(window.confirm('Хочешь загрузить ваше фото?')) {
+                    // Здесь будет загрузка фото
+                    alert('В полной версии можно будет загрузить фото! Пока используйте заглушку 😊');
+                }
+            });
+            
+            // Добавляем свайп-эффект
+            let startX;
+            placeholder.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+            
+            placeholder.addEventListener('touchmove', (e) => {
+                if(!startX) return;
+                const diff = e.touches[0].clientX - startX;
+                if(Math.abs(diff) > 50) {
+                    placeholder.style.transform = `rotateY(${diff/5}deg)`;
+                }
+            });
+            
+            placeholder.addEventListener('touchend', () => {
+                placeholder.style.transform = '';
+                startX = null;
+            });
+        }
+        
+        // НАЧАТЬ ИГРУ
+        function startGame() {
+            // Эффект нажатия кнопки
+            const btn = event.currentTarget;
+            btn.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                // Переход к игре
+                document.body.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 0; left: 0;
+                        width: 100%; height: 100%;
+                        background: linear-gradient(45deg, #FF6B8B, #4A90E2);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        color: white;
+                        text-align: center;
+                        padding: 20px;
+                        z-index: 1000;
+                    ">
+                        <h1 style="font-size: 2.5rem; margin-bottom: 20px;">🎮 Игра начинается!</h1>
+                        <p style="font-size: 1.2rem; margin-bottom: 30px; max-width: 300px;">
+                            Приготовьтесь к совместному приключению!
+                        </p>
+                        <div style="
+                            background: rgba(255,255,255,0.2);
+                            padding: 30px;
+                            border-radius: 20px;
+                            margin: 20px 0;
+                            backdrop-filter: blur(10px);
+                        ">
+                            <p style="margin-bottom: 15px;">👈 Левая сторона экрана — управление игроком 1</p>
+                            <p>Правая сторона экрана — управление игроком 2 👉</p>
+                        </div>
+                        <button onclick="location.reload()" style="
+                            background: white;
+                            color: #FF3B6B;
+                            border: none;
+                            padding: 15px 40px;
+                            font-size: 1.2rem;
+                            border-radius: 25px;
+                            margin-top: 30px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                        ">
+                            ← Назад в меню
+                        </button>
+                    </div>
+                `;
+            }, 150);
+        }
+        
+        // ПОКАЗАТЬ СЛУЧАЙНОЕ ПОСЛАНИЕ
+        function showMessage() {
+            const modal = document.getElementById('messageModal');
+            const content = document.getElementById('messageContent');
+            
+            // Выбираем случайное послание
+            const randomIndex = Math.floor(Math.random() * secretMessages.length);
+            const message = secretMessages[randomIndex];
+            
+            // Анимированный вывод текста
+            content.innerHTML = '';
+            const words = message.split(' ');
+            let index = 0;
+            
+            function typeWord() {
+                if(index < words.length) {
+                    content.innerHTML += (index > 0 ? ' ' : '') + words[index];
+                    index++;
+                    setTimeout(typeWord, 100);
+                } else {
+                    // Добавляем сердечко в конце
+                    content.innerHTML += '<div style="text-align: center; margin-top: 30px; font-size: 3rem;">❤️</div>';
+                }
+            }
+            
+            // Эффект кнопки
+            event.currentTarget.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                event.currentTarget.style.transform = '';
+                modal.style.display = 'flex';
+                setTimeout(typeWord, 300);
+            }, 150);
+        }
+        
+        // ЗАКРЫТЬ МОДАЛЬНОЕ ОКНО
+        function closeMessage() {
+            const modal = document.getElementById('messageModal');
+            modal.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.style.animation = '';
+            }, 300);
+        }
+        
+        // ЗАКРЫТЬ ПО КЛИКУ ВНЕ ОКНА
+        window.onclick = function(event) {
+            const modal = document.getElementById('messageModal');
+            if(event.target === modal) {
+                closeMessage();
+            }
+        }
+        
+        // ЗАКРЫТЬ ПО КЛАВИШЕ ESC
+        document.addEventListener('keydown', function(event) {
+            if(event.key === 'Escape') {
+                closeMessage();
+            }
+        });
+        
+        // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+        window.onload = function() {
+            createHearts();
+            setupPhotoUpload();
+            
+            // Вибрация при загрузке (если поддерживается)
+            if(navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+            
+            // Предзагрузка (можно добавить)
+            console.log('Игра загружена! ❤️');
+        };
+        
+        // ПРЕДОТВРАЩЕНИЕ СКРОЛЛА НА МОБИЛЬНЫХ
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        // ПОВОРОТ ЭКРАНА
+        function handleOrientation() {
+            if(window.innerHeight > window.innerWidth) {
+                // Портретная ориентация
+                console.log('Портретный режим ✓');
+            } else {
+                // Альбомная ориентация
+                alert('Поверните телефон вертикально для лучшего опыта!');
+            }
+        }
+        
+        window.addEventListener('resize', handleOrientation);
+        window.addEventListener('orientationchange', handleOrientation);
+        handleOrientation(); // Проверяем при загрузке
     </script>
 </body>
 </html>
